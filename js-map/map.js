@@ -3,14 +3,19 @@ var center = [10947620, 890723];
 //var phuket_extent = [10913000, 916000, 10970000, 810000];
 var phuket_extent = ol.proj.transformExtent([98.002, 7.255, 98.550, 8.228], 'EPSG:4326', 'EPSG:3857');
 
-// This dummy layer tells Google Maps to switch to its default map type
-var googleLayerHybrid = new olgm.layer.Google({
-	mapTypeId: google.maps.MapTypeId.HYBRID
+// Base Map Layers: Esri World Imagery (ArcGIS) & OpenStreetMap (OSM) - Free, No API Key needed
+var esriLayer = new ol.layer.Tile({
+    source: new ol.source.XYZ({
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attributions: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        maxZoom: 19
+    }),
+    visible: true
 });
 
-var googleLayerRoadmap = new olgm.layer.Google({
-	mapTypeId: google.maps.MapTypeId.ROADMAP,
-	visible: false
+var osmLayer = new ol.layer.Tile({
+    source: new ol.source.OSM(),
+    visible: false
 });
 
 // boundary, water, road, power line maps
@@ -281,8 +286,6 @@ var vectorLayer = new ol.layer.Vector({
 
 
 var map = new ol.Map({
-  // use OL3-Google-Maps recommended default interactions
-  interactions: olgm.interaction.defaults(),
   controls: ol.control.defaults({
 			zoom: false,
 			attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -295,8 +298,8 @@ var map = new ol.Map({
 		  })
         ]),
   	layers: [
-		googleLayerRoadmap,
-		googleLayerHybrid,
+		osmLayer,
+		esriLayer,
 		tileWMSLayer_Pk_Slope,
 		//tileWMSLayer_Pk_Water,
 		//tileWMSLayer_Pk_Road,
@@ -359,18 +362,15 @@ map.addControl(new ol.control.Zoom({
 }));
 
 
-var olGM = new olgm.OLGoogleMaps({map: map}); // map is the ol.Map instance
-olGM.activate();
-
 // change based map
 function changeBasedMap(basedmap) {
 	if(basedmap == 'hybrid'){
-		googleLayerRoadmap.setVisible(false);
-		googleLayerHybrid.setVisible(true);
+		osmLayer.setVisible(false);
+		esriLayer.setVisible(true);
 	}
 	if(basedmap == 'road'){
-		googleLayerRoadmap.setVisible(true);
-		googleLayerHybrid.setVisible(false);
+		osmLayer.setVisible(true);
+		esriLayer.setVisible(false);
 	}
 }
 

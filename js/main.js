@@ -339,6 +339,12 @@ $(document).ready(function(){
 				 //alert(mapZone);
 				 //alert($('#oper-prod-index').val());
 				var operProdIndex = getValues(getObjects(index_json_obj,'oper_prod_name_sub',$("#building-index").val()),'indexID');
+				// require exactly one match (blank/partial text gives [], empty text matches every index)
+				if(operProdIndex.length != 1) {
+					$('#building-index').parent().addClass('form-control-error')
+					return false;
+				}
+				operProdIndex = operProdIndex[0];
        		
 				$.fancybox({
 					href : 'php/lu_act_validate.php?data='+mapZone+'&index='+operProdIndex+'&xy='+xy,
@@ -481,6 +487,11 @@ $(document).ready(function(){
 		
 		if($('#oper-prod-index').val()=="-")
 			$('#oper-prod-index').parent().addClass('form-control-error');
+	});
+
+	$('#building-index').on('input', function(){
+		// remove error
+		$('#building-index').parent().removeClass('form-control-error');
 	});
 
 	$('#back-to-map').click(function(){

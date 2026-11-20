@@ -1,0 +1,54 @@
+services:
+  web:
+    build: .
+    container_name: luphuket_web
+    ports:
+      - "8088:80"
+    volumes:
+      - .:/var/www/html/
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=landuse@phuket
+      - DB_NAME=landuse_phuket
+    depends_on:
+      - db
+      - geoserver
+
+  db:
+    image: mariadb:10.6
+    container_name: luphuket_db
+    environment:
+      MYSQL_ROOT_PASSWORD: "landuse@phuket"
+      MYSQL_DATABASE: "landuse_phuket"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+
+  geoserver:
+    image: kartoza/geoserver:2.19.0
+    container_name: luphuket_geoserver
+    ports:
+      - "8082:8080"
+    environment:
+      GEOSERVER_ADMIN_USER: admin
+      GEOSERVER_ADMIN_PASSWORD: mypassword
+    volumes:
+      - ./geoserver_data:/opt/geoserver/data_dir
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: luphuket_phpmyadmin
+    ports:
+      - "8090:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: "landuse@phuket"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
