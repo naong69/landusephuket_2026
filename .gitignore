@@ -1,3 +1,5 @@
 .DS_Store
-.sql
-geoserver_data/
+*.sql
+geoserver_data/
+geoserver_shp/
+.env

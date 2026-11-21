@@ -1,0 +1,6 @@
+# Same protection for Apache outside Docker (e.g. XAMPP, needs AllowOverride All).
+# Docker uses docker/security.conf instead.
+<FilesMatch "^\.|\.(sql|ftl|md)$|^(docker-compose\.ya?ml|Dockerfile)$">
+    Require all denied
+</FilesMatch>
+RedirectMatch 403 ^/?(.*/)?(\.git|docker|sql|geoserver_data|geoserver_shp|geoserver_templates)(/|$)

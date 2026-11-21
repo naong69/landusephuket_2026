@@ -1,3 +1,12 @@
+// GeoServer for the phuket_lu_law layers.
+// Default: the site's own GeoServer container, proxied by Apache at /geoserver/phuket_lu_law/
+// (docker/geoserver-proxy.conf), on both localhost and production.
+// Add ?gs=remote to the page URL to use the old remote GeoServer instead.
+var GEOSERVER_REMOTE = 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms';
+var GEOSERVER_LOCAL  = '/geoserver/phuket_lu_law/wms';
+var GEOSERVER_WMS = /[?&]gs=remote\b/.test(location.search) ? GEOSERVER_REMOTE : GEOSERVER_LOCAL;
+console.log("GeoServer: " + GEOSERVER_WMS);
+
 var extent = [-13884991, 2870341, -7455066, 6338219];
 var center = [10947620, 890723];
 //var phuket_extent = [10913000, 916000, 10970000, 810000];
@@ -23,7 +32,7 @@ var osmLayer = new ol.layer.Tile({
 var tileWMSLayer_Pk_Boundary  =  new ol.layer.Tile({
   extent: [-13884991, 2870341, -7455066, 6338219],
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
     params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			LAYERS: 'phuket_lu_law:pk_admin_boundary'},
@@ -35,7 +44,7 @@ var tileWMSLayer_Pk_Boundary  =  new ol.layer.Tile({
 var tileWMSLayer_Pk_Road  =  new ol.layer.Tile({
   extent: [-13884991, 2870341, -7455066, 6338219],
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
     params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			LAYERS: 'phuket_lu_law:pk_road_for_lu_check'},
@@ -48,7 +57,7 @@ tileWMSLayer_Pk_Road.setOpacity(0.4)
 var tileWMSLayer_Pk_Water  =  new ol.layer.Tile({
   extent: [-13884991, 2870341, -7455066, 6338219],
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
     params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			LAYERS: 'phuket_lu_law:pk_water_body_for_lu_check'},
@@ -62,7 +71,7 @@ tileWMSLayer_Pk_Water.setOpacity(0.4)
 var tileWMSLayer_Pk_Boundary  =  new ol.layer.Tile({
   extent: phuket_extent,
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
     params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			LAYERS: 'phuket_lu_law:pk_admin_boundary'},
@@ -74,7 +83,7 @@ var tileWMSLayer_Pk_Boundary  =  new ol.layer.Tile({
 var tileWMSLayer_Pk_Public_Area  =  new ol.layer.Tile({
   extent: phuket_extent,
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
     params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			 'LAYERS': 'phuket_lu_law:pk_public_area',
@@ -89,7 +98,7 @@ tileWMSLayer_Pk_Public_Area.setOpacity(0.5)
 var tileWMSLayer_Pk_Envi_2560  =  new ol.layer.Tile({
   extent: phuket_extent,
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 	params: {'FORMAT': 'image/png',
 			 'VERSION': '1.1.1', 
 			 'LAYERS': 'phuket_lu_law:pk_en_act_2560',
@@ -103,7 +112,7 @@ tileWMSLayer_Pk_Envi_2560.setOpacity(0.4)
 var tileWMSLayer_Pk_Bc_15  =  new ol.layer.Tile({
   extent: phuket_extent,
   source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 		  params: {'FORMAT': 'image/png',
 				   'VERSION': '1.1.1',  
 				 'LAYERS': 'phuket_lu_law:pk_bc15_act_2529',
@@ -117,7 +126,7 @@ tileWMSLayer_Pk_Bc_15.setOpacity(0.4)
 var tileWMSLayer_Pk_Bc_20  =  new ol.layer.Tile({
   extent: phuket_extent,
    source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 		  params: {'FORMAT': 'image/png',
 				   'VERSION': '1.1.1',  
 				   'LAYERS': 'phuket_lu_law:pk_bc20_act_2532',
@@ -131,7 +140,7 @@ tileWMSLayer_Pk_Bc_20.setOpacity(0.4)
 var tileWMSLayer_Pk_Cp_2558  =  new ol.layer.Tile({
   extent: phuket_extent,
    source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 		  params: {'FORMAT': 'image/png',
 				   'VERSION': '1.1.1',  
 				   'LAYERS': 'phuket_lu_law:pk_cp_act_2558',
@@ -145,7 +154,7 @@ tileWMSLayer_Pk_Cp_2558.setOpacity(0.4)
 var tileWMSLayer_Pk_Patong_Lu_Act_2548  =  new ol.layer.Tile({
   extent: phuket_extent,
    source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 		  params: {'FORMAT': 'image/png',
 				   'VERSION': '1.1.1',  
 				LAYERS: 'phuket_lu_law:pk_patong_lu_act_2548'},
@@ -158,7 +167,7 @@ tileWMSLayer_Pk_Patong_Lu_Act_2548.setOpacity(0.4)
 var tileWMSLayer_Pk_Slope  =  new ol.layer.Tile({
   extent: phuket_extent,
    source: new ol.source.TileWMS({
-    url: 'http://52.77.120.244:8080/geoserver/phuket_lu_law/wms',
+    url: GEOSERVER_WMS,
 		  params: {'FORMAT': 'image/png',
 				   'VERSION': '1.1.1',  
 				LAYERS: 'phuket_lu_law:pk_slope_dem5m'},

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/auth.php';
+admin_require_api();
 if(isset($_REQUEST['time'])){
 include('../php/connect.php');
 
