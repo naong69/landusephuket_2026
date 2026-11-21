@@ -176,6 +176,7 @@ if(in_array("pk_en_act_2560",$map)){
 	//EIA Restriction
     $strSQL = "SELECT B.ex_re_dec FROM `en_ex_re_key` as B WHERE indexID IN (SELECT A.zone_".$zone[$key]." FROM `en_eia_restriction` as A WHERE indexID = '".$index."')";
     $objQuery = mysqli_query($link, $strSQL);
+    $objResult = mysqli_fetch_array($objQuery);
     $enEiaRes = $objResult[0] ?? null;
 
 }

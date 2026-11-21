@@ -1,8 +1,6 @@
-﻿<?php
-
-if(isset($_REQUEST['login'])){
-	if($_REQUEST['login']== 'secure'){
-	
+<?php
+require_once __DIR__ . '/auth.php';
+admin_require_page();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -15,6 +13,10 @@ if(isset($_REQUEST['login'])){
 <link rel="stylesheet" href="../css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script>
+	// session expired -> back to login page
+	$(document).ajaxError(function (e, xhr) { if (xhr.status === 401) location.href = 'index.php'; });
+</script>
 <style type="text/css">
 	div.container {
 		margin-top: 10px;
@@ -52,6 +54,7 @@ if(isset($_REQUEST['login'])){
 	<div role="tabpanel">
 	
 	<div id="time-range-container" class="text-right">
+		<a href="logout.php" class="btn btn-default btn-sm" style="margin-bottom:8px">Log out</a>
 		<div id="time-range-box" class="form-group">
 			<select id="time-index" class="form-control">
 				<option value="3">Last 3 days</option>
@@ -692,7 +695,3 @@ if(isset($_REQUEST['login'])){
 <!-- local key -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCur6MaPaTB5QKXNdN7N4JFJZoCBko9FC4&callback=initMap"></script>
 </html>
-<?php
-	}
-}
-?>

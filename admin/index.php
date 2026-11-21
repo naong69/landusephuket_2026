@@ -1,12 +1,24 @@
-﻿<?php
+<?php
+
+require_once __DIR__ . '/../php/env.php';
+require_once __DIR__ . '/auth.php';
+
+if (admin_is_logged_in()) { // already logged in
+	header('Location: ./backend.php');
+	exit;
+}
 
 $msg="";
 if (isset($_POST["userName"])) {
 $userid=$_POST["userName"];
 $password=$_POST["userPassword"];
+$admin_user = (string) env('ADMIN_USER', '');
+$admin_pass = (string) env('ADMIN_PASS', '');
 
-if($userid == 'admin' && $password == 'admin@luphuket'){	
-	header('Location: ./backend.php?login=secure');
+if($admin_user !== '' && $admin_pass !== ''
+	&& hash_equals($admin_user, (string) $userid) && hash_equals($admin_pass, (string) $password)){
+	admin_login($admin_user);
+	header('Location: ./backend.php');
 	die();
 } else {
 	
@@ -20,7 +32,6 @@ if($userid == 'admin' && $password == 'admin@luphuket'){
 
 }
 ?>
-<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
