@@ -69,16 +69,22 @@ $utc = new DateTime($datetime, new DateTimeZone('UTC'));
 $utc->setTimezone(new DateTimeZone('Asia/Bangkok'));
 $time_stamp = $utc->format('Y-m-d H:i:s');
 
-$strSQL = "INSERT INTO `validate_logs` (`time_stamp`, `ip`, `os`, `browser`, `coor_xy`, `build_up_index`) VALUES ('".$time_stamp."', '".$remote_ip."', '".$user_os."', '".$user_browser."', '".$xy."', '".$index."')";
-$objQuery = mysqli_query($link, $strSQL);
-
-
 // validate process
 // start query
 
-$strSQL = "SELECT * FROM all_index WHERE indexID = '".$index."' ";
-$objQuery = mysqli_query($link, $strSQL);
-$objResult = mysqli_fetch_array($objQuery);
+$stmt = mysqli_prepare($link, "SELECT * FROM all_index WHERE indexID = ?");
+mysqli_stmt_bind_param($stmt, "s", $index);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt));
+mysqli_stmt_close($stmt);
+
+// log only building codes that exist in all_index (skips blank/invalid index)
+if($objResult){
+	$stmt = mysqli_prepare($link, "INSERT INTO `validate_logs` (`time_stamp`, `ip`, `os`, `browser`, `coor_xy`, `build_up_index`) VALUES (?, ?, ?, ?, ?, ?)");
+	mysqli_stmt_bind_param($stmt, "ssssss", $time_stamp, $remote_ip, $user_os, $user_browser, $xy, $index);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_close($stmt);
+}
 
 $cat_name = $objResult[2];
 $group_name = $objResult[5];
