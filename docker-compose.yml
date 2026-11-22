@@ -31,6 +31,7 @@ services:
 
   geoserver:
     image: kartoza/geoserver:2.19.0
+    platform: linux/amd64   # image is amd64-only; runs emulated on Apple Silicon
     container_name: luphuket_geoserver
     ports:
       - "127.0.0.1:8082:8080"   # GeoServer admin: host-only (use SSH tunnel on production)

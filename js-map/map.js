@@ -12,6 +12,18 @@ var center = [10947620, 890723];
 //var phuket_extent = [10913000, 916000, 10970000, 810000];
 var phuket_extent = ol.proj.transformExtent([98.002, 7.255, 98.550, 8.228], 'EPSG:4326', 'EPSG:3857');
 
+/*
+// This dummy layer tells Google Maps to switch to its default map type
+var googleLayerHybrid = new olgm.layer.Google({
+	mapTypeId: google.maps.MapTypeId.HYBRID
+});
+
+var googleLayerRoadmap = new olgm.layer.Google({
+	mapTypeId: google.maps.MapTypeId.ROADMAP,
+	visible: false
+});
+*/
+
 // Base Map Layers: Esri World Imagery (ArcGIS) & OpenStreetMap (OSM) - Free, No API Key needed
 var esriLayer = new ol.layer.Tile({
     source: new ol.source.XYZ({
@@ -307,6 +319,8 @@ var map = new ol.Map({
 		  })
         ]),
   	layers: [
+		//googleLayerRoadmap,
+		//googleLayerHybrid,
 		osmLayer,
 		esriLayer,
 		tileWMSLayer_Pk_Slope,
