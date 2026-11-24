@@ -69,16 +69,22 @@ $utc = new DateTime($datetime, new DateTimeZone('UTC'));
 $utc->setTimezone(new DateTimeZone('Asia/Bangkok'));
 $time_stamp = $utc->format('Y-m-d H:i:s');
 
-$strSQL = "INSERT INTO `validate_logs` (`time_stamp`, `ip`, `os`, `browser`, `coor_xy`, `build_up_index`) VALUES ('".$time_stamp."', '".$remote_ip."', '".$user_os."', '".$user_browser."', '".$xy."', '".$index."')";
-$objQuery = mysqli_query($link, $strSQL);
-
-
 // validate process
 // start query
 
-$strSQL = "SELECT * FROM all_index WHERE indexID = '".$index."' ";
-$objQuery = mysqli_query($link, $strSQL);
-$objResult = mysqli_fetch_array($objQuery);
+$stmt = mysqli_prepare($link, "SELECT * FROM all_index WHERE indexID = ?");
+mysqli_stmt_bind_param($stmt, "s", $index);
+mysqli_stmt_execute($stmt);
+$objResult = mysqli_fetch_array(mysqli_stmt_get_result($stmt));
+mysqli_stmt_close($stmt);
+
+// log only building codes that exist in all_index (skips blank/invalid index)
+if($objResult){
+	$stmt = mysqli_prepare($link, "INSERT INTO `validate_logs` (`time_stamp`, `ip`, `os`, `browser`, `coor_xy`, `build_up_index`) VALUES (?, ?, ?, ?, ?, ?)");
+	mysqli_stmt_bind_param($stmt, "ssssss", $time_stamp, $remote_ip, $user_os, $user_browser, $xy, $index);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_close($stmt);
+}
 
 $cat_name = $objResult[2];
 $group_name = $objResult[5];
@@ -419,7 +425,7 @@ if(in_array("pk_patong_lu_act_2548",$map)){
 	?>
      <div class="span btn-block">
         <div class="acts alert <?php echo($cpval)? "alert-success" : "alert-danger" ?>" role="alert"><div class="act-label">กฏหมายผังเมืองรวม พ.ศ. ๒๕๕๘</div></div>
-		<ul id="subforms2" class="subforums" style="padding: 7px 7px; list-style: none;">
+		<ul id="subforums2" class="subforums" style="padding: 7px 7px; list-style: none;">
 			<li><span><b>โซน:</b> <?php echo $zone_[$key] ?> </span> </li>
 			<li><span class="val" >ผลการตรวจสอบ: </span> <?php echo($cpval)? "<span style='color: green;'><b>สร้างได้</b></span>" : "<span style='color: red; font-size: 16px; '><b>สร้างไม่ได้</b></span>" ?></li>
 			<?php if($cpval == 1 || strlen($cpExcepRes) != 1) { ?>

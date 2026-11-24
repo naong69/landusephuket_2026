@@ -3,14 +3,18 @@ var center = [10947620, 890723];
 //var phuket_extent = [10913000, 916000, 10970000, 810000];
 var phuket_extent = ol.proj.transformExtent([98.002, 7.255, 98.550, 8.228], 'EPSG:4326', 'EPSG:3857');
 
-// This dummy layer tells Google Maps to switch to its default map type
-var googleLayerHybrid = new olgm.layer.Google({
-	mapTypeId: google.maps.MapTypeId.HYBRID
+// Free Base Map layers (No API Key required)
+var osmLayer = new ol.layer.Tile({
+	source: new ol.source.OSM(),
+	visible: false
 });
 
-var googleLayerRoadmap = new olgm.layer.Google({
-	mapTypeId: google.maps.MapTypeId.ROADMAP,
-	visible: false
+var esriSatelliteLayer = new ol.layer.Tile({
+	source: new ol.source.XYZ({
+		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+		maxZoom: 19
+	}),
+	visible: true
 });
 
 // boundary, water, road, power line maps
@@ -295,8 +299,8 @@ var map = new ol.Map({
 		  })
         ]),
   	layers: [
-		googleLayerRoadmap,
-		googleLayerHybrid,
+		osmLayer,
+		esriSatelliteLayer,
 		tileWMSLayer_Pk_Slope,
 		//tileWMSLayer_Pk_Water,
 		//tileWMSLayer_Pk_Road,
@@ -359,18 +363,15 @@ map.addControl(new ol.control.Zoom({
 }));
 
 
-var olGM = new olgm.OLGoogleMaps({map: map}); // map is the ol.Map instance
-olGM.activate();
-
-// change based map
+// Base map switcher (Free OpenStreetMap and Esri Satellite)
 function changeBasedMap(basedmap) {
 	if(basedmap == 'hybrid'){
-		googleLayerRoadmap.setVisible(false);
-		googleLayerHybrid.setVisible(true);
+		osmLayer.setVisible(false);
+		esriSatelliteLayer.setVisible(true);
 	}
 	if(basedmap == 'road'){
-		googleLayerRoadmap.setVisible(true);
-		googleLayerHybrid.setVisible(false);
+		osmLayer.setVisible(true);
+		esriSatelliteLayer.setVisible(false);
 	}
 }
 

@@ -1,4 +1,12 @@
 <?php
-	$link = mysqli_connect("localhost", "root", "landuse@phuket", "landuse_phuket");
-	mysqli_set_charset ( $link , "utf8" );
+	$db_host = getenv('DB_HOST') ?: 'db';
+	$db_user = getenv('DB_USER') ?: 'root';
+	$db_pass = getenv('DB_PASS') ?: 'landuse@phuket';
+	$db_name = getenv('DB_NAME') ?: 'landuse_phuket';
+
+	$link = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+	if (!$link) {
+		die("Database connection failed: " . mysqli_connect_error());
+	}
+	mysqli_set_charset($link, "utf8");
 ?>
