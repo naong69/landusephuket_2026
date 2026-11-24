@@ -510,24 +510,15 @@ $('textarea[name=message]').on('input', function() {
 });
 
 function ipLookUp() {
-  $.ajax('http://ip-api.com/json')
-  .then(
-      function success(response) {
-          new_client_ip = response.query
-
-			if(client_ip != new_client_ip){
-				evaluationForm()
-				client_ip = new_client_ip
-			}
-      },
-
-      function fail(data, status) {
-          //console.log('Request failed.  Returned status of', status);
-      }
-  );
+	// แสดงแบบประเมินเฉพาะครั้งแรกที่ค้นหาในแต่ละรอบการเข้าใช้งานเว็บ (Session)
+	if (!sessionStorage.getItem('evaluation_shown')) {
+		sessionStorage.setItem('evaluation_shown', 'true');
+		evaluationForm();
+	}
 }
 
 function evaluationForm() {
+	sessionStorage.setItem('evaluation_shown', 'true');
 	$.fancybox({
 		href : 'system_evaluation_form.html',
 		width    	: '75%',
