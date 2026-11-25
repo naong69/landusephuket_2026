@@ -669,7 +669,7 @@ function getKeys(obj, val) {
 /* ==========  START GOOGLE MAP ========== */
 
 // When the window has finished loading create our google map below
-google.maps.event.addDomListener(window, 'load', init);
+if (typeof google !== 'undefined') { google.maps.event.addDomListener(window, 'load', init); }
 
 function init() {
     // Basic options for a simple Google Map
