@@ -319,10 +319,10 @@ var map = new ol.Map({
 		  })
         ]),
   	layers: [
-		//googleLayerRoadmap,
-		//googleLayerHybrid,
-		osmLayer,
-		esriLayer,
+		googleLayerRoadmap,
+		googleLayerHybrid,
+		//osmLayer,
+		//esriLayer,
 		tileWMSLayer_Pk_Slope,
 		//tileWMSLayer_Pk_Water,
 		//tileWMSLayer_Pk_Road,
@@ -384,16 +384,18 @@ map.addControl(new ol.control.Zoom({
 	zoomOutTipLabel: 'ขยายออก'
 }));
 
+var olGM = new olgm.OLGoogleMaps({map: map});
+olGM.activate();
 
 // change based map
 function changeBasedMap(basedmap) {
 	if(basedmap == 'hybrid'){
-		osmLayer.setVisible(false);
-		esriLayer.setVisible(true);
+		googleLayerRoadmap.setVisible(false);
+		googleLayerHybrid.setVisible(true);
 	}
 	if(basedmap == 'road'){
-		osmLayer.setVisible(true);
-		esriLayer.setVisible(false);
+		googleLayerRoadmap.setVisible(true);
+		googleLayerHybrid.setVisible(false);
 	}
 }
 
