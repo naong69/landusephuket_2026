@@ -334,7 +334,7 @@ var map = new ol.Map({
 		tileWMSLayer_Pk_Bc_15,
 		tileWMSLayer_Pk_Bc_20,
 		tileWMSLayer_Pk_Patong_Lu_Act_2548,
-		tileWMSLayer_WMSDOL,
+		//tileWMSLayer_WMSDOL,
 		vectorLayer
 	],
   	target: 'map',
