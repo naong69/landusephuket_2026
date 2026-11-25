@@ -1,3 +1,4 @@
+<?php
 // Returns the visitor's IP address as JSON, in the same shape js/main.js
 // expected from ip-api.com:  {"query": "1.2.3.4"}
 // Replaces the call to http://ip-api.com/json, which has no HTTPS on its free plan.
