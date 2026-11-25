@@ -189,7 +189,7 @@ var tileWMSLayer_Pk_Slope  =  new ol.layer.Tile({
 });
 tileWMSLayer_Pk_Slope.setOpacity(0.4)
 
-
+/*
 // DOL 
 var url_ = "";
 var d = new Date();
@@ -218,7 +218,7 @@ var tileWMSLayer_WMSDOL  =  new ol.layer.Tile({
   }),
   visible: false
 });
-
+*/
 
 //create home button control
 /**
