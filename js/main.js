@@ -510,7 +510,7 @@ $('textarea[name=message]').on('input', function() {
 });
 
 function ipLookUp() {
-  $.ajax('http://ip-api.com/json')
+  $.ajax('php/get_ip.php')
   .then(
       function success(response) {
           new_client_ip = response.query
